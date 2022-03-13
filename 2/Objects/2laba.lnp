@@ -1,0 +1,14 @@
+--cpu=Cortex-M4.fp.sp
+".\objects\main.o"
+".\objects\startup_stm32f411xe.o"
+".\objects\system_stm32f4xx.o"
+".\objects\freertos_evr.o"
+".\objects\list.o"
+".\objects\heap_4.o"
+".\objects\port.o"
+".\objects\queue.o"
+".\objects\tasks.o"
+--strict --scatter ".\Objects\2laba.sct"
+--summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
+--info sizes --info totals --info unused --info veneers
+--list ".\Listings\2laba.map" -o .\Objects\2laba.axf
