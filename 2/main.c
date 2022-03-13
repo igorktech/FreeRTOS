@@ -22,7 +22,6 @@ int main()
 	init();
 
 	xTaskCreate(blink, "blink", configMINIMAL_STACK_SIZE, NULL, 2, &blink_);
-	xTaskCreate(move_blink, "move_blink", configMINIMAL_STACK_SIZE, NULL, 3, &move_blink_);
 	vTaskStartScheduler();
 	
 	while(1);
@@ -32,15 +31,18 @@ void blink()
 {
 	while(1)
 	{
-			vTaskSuspend(move_blink_);
-			for(uint8_t i = 0; i < 2*m; i++){
+			UBaseType_t blink_p = uxTaskPriorityGet(blink_); //get task priority
+			for(uint8_t i = 0; i < 5*m; i++){
+				if(i==2*m){
+					xTaskCreate(move_blink, "move_blink", configMINIMAL_STACK_SIZE, NULL,
+					blink_p, &move_blink_);
+				}
 				GPIOA->ODR |= GPIO_ODR_ODR_5; //LED ON
 				vTaskDelay(1000*t);
 				GPIOA->ODR &= ~GPIO_ODR_ODR_5; //LED OFF
 				vTaskDelay(1000*t);
 			}
-			vTaskResume(move_blink_);
-			vTaskDelay(2000);
+			vTaskDelete(move_blink_); //delete created task
 	}
 }
 
