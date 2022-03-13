@@ -9,7 +9,7 @@
 #define m 3
 void blink();
 void move_blink();
-
+TaskHandle_t blink_, move_blink_;
 void init(){
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; //Enable Port A 
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOBEN; //Enable Port B
@@ -21,8 +21,8 @@ int main()
 {
 	init();
 
-	xTaskCreate(blink, "blink", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
-	xTaskCreate(move_blink, "move_blink", configMINIMAL_STACK_SIZE, NULL, 2, NULL);
+	xTaskCreate(blink, "blink", configMINIMAL_STACK_SIZE, NULL, 2, &blink_);
+	xTaskCreate(move_blink, "move_blink", configMINIMAL_STACK_SIZE, NULL, 3, &move_blink_);
 	vTaskStartScheduler();
 	
 	while(1);
@@ -32,11 +32,14 @@ void blink()
 {
 	while(1)
 	{
-		
-			GPIOA->ODR |= GPIO_ODR_ODR_5; //LED ON
-			vTaskDelay(1000*t);
-			GPIOA->ODR &= ~GPIO_ODR_ODR_5; //LED OFF
-			vTaskDelay(1000*t);
+			
+			for(uint8_t i = 0; i < m; i++){
+				GPIOA->ODR |= GPIO_ODR_ODR_5; //LED ON
+				vTaskDelay(1000*t);
+				GPIOA->ODR &= ~GPIO_ODR_ODR_5; //LED OFF
+				vTaskDelay(1000*t);
+			}
+			vTaskDelay(100);
 	}
 }
 
@@ -44,11 +47,14 @@ void move_blink()
 {
 	while(1)
 	{
+			for(uint8_t j = 0; j < m; j++){
 				for(uint8_t i = 0; i < 8; i++)
 				{
 					GPIOB->ODR = (1 << (7-i)) | (1 << (i+8));
 					vTaskDelay(1000);
 				}
+			}
+			vTaskDelay(5);
 	}
 }
 	
