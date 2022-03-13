@@ -32,14 +32,15 @@ void blink()
 {
 	while(1)
 	{
-			
-			for(uint8_t i = 0; i < m; i++){
+			vTaskSuspend(move_blink_);
+			for(uint8_t i = 0; i < 2*m; i++){
 				GPIOA->ODR |= GPIO_ODR_ODR_5; //LED ON
 				vTaskDelay(1000*t);
 				GPIOA->ODR &= ~GPIO_ODR_ODR_5; //LED OFF
 				vTaskDelay(1000*t);
 			}
-			vTaskDelay(100);
+			vTaskResume(move_blink_);
+			vTaskDelay(2000);
 	}
 }
 
