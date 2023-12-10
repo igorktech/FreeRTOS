@@ -1,5 +1,6 @@
 *.html linguist-detectable=false
 *.RIV linguist-detectable=false
+*.htm linguist-detectable=false
 *.uvoptx linguist-detectable=false
 *.uvprojx linguist-detectable=false
 Objects/* linguist-detectable=false
