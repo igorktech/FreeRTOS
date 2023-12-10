@@ -2,8 +2,5 @@
 *.RIV linguist-detectable=false
 *.uvoptx linguist-detectable=false
 *.uvprojx linguist-detectable=false
-*.Worker03 linguist-detectable=false
-*.ik76 linguist-detectable=false
-*.Innokentiy linguist-detectable=false
 Objects/* linguist-detectable=false
 RTE/* linguist-detectable=false
